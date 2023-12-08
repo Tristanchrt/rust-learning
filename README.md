@@ -11,3 +11,4 @@ https://doc.rust-lang.org/book/ch04-01-what-is-ownership.html
 > cargo run
 > cargo check
 > cargo doc --open
+> cargo new restaurant --lib
