@@ -1,23 +1,15 @@
-use std::fs::File;
-use std::io::{self, Read};
-
-fn read_username_from_file() -> Result<String, io::Error> {
-    let mut username_file = File::open("hello.txt")?;
-    let mut username = String::new();
-    username_file.read_to_string(&mut username)?;
-    Ok(username)
-}
-
-
-struct Node {
-    data: String,
-    next: Option<Box<Node>>
-}
-
-struct Linkedlist {
-    head: Option<Box<Node>>,
+fn longest<'a>(x: &'a str, y: &'a str) -> &'a str {
+    if x.len() > y.len() {
+        x
+    } else {
+        y
+    }
 }
 
 fn main() {
-    let _ = read_username_from_file();
+    let string1 = String::from("abcd");
+    let string2 = "xyz";
+
+    let result = longest(string1.as_str(), string2);
+    println!("The longest string is {}", result);
 }

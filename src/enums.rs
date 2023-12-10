@@ -16,14 +16,13 @@ struct ChangeColorMessage(i32, i32, i32); // tuple struct
 
 impl Message {
     fn call(&self) {
-        dbg!();
         match self {
-            Message::Write(content) => println!("Content of Write variant: {}", content),
+            Message::Write(data) => println!("data of Write variant: {}", data),
             Message::Move { x, y } => println!("Move variant: x={}, y={}", x, y),
-            _ => println!("Variant does not contain content to display."),
+            Message::Quit(data) => println!("Move variant: x={}, y={}", data),
+            _ => println!("Variant does not contain data to display."),
 
         }
-      
     }
 }
 
@@ -68,18 +67,18 @@ fn value_in_cents(coin: Coin) -> u8 {
 
 fn main() {
 
-    // let m = Message::Write(String::from("hello"));
-    // m.call();
+    let m = Message::Write(String::from("hello"));
+    m.call();
     
-    // let pomme = MoveMessage {
-    //     x: 10,
-    //     y: 20,
-    // };
+    let pomme = MoveMessage {
+        x: 10,
+        y: 20,
+    };
 
-    // let a = match pomme {
-    //     MoveMessage { x, y } => Message::Move { x, y },
-    // };
-    // a.call();
+    let a = match pomme {
+        MoveMessage { x, y } => Message::Move { x, y },
+    };
+    a.call();
 
     let result = get_value(true);
 
