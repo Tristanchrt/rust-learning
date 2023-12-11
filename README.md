@@ -21,6 +21,15 @@ https://doc.rust-lang.org/book/ch04-01-what-is-ownership.html
 > cargo doc --open
 > cargo new restaurant --lib
 
+## Cargo Test
+
+> cargo test -- --test-threads=1
+> cargo test -- --show-output
+> cargo test greater_than_100
+> cargo test -- --ignored
+> cargo test --test integration_test
+
+
 ## Ownership, Borrowing and Slice type
 
 ### Ownership
