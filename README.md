@@ -7,6 +7,8 @@ The Rust Book provides comprehensive and beginner-friendly explanations of Rust 
 
 [https://doc.rust-lang.org/book/ch04-01-what-is-ownership.html](https://doc.rust-lang.org/book/ch04-01-what-is-ownership.html]())
 
+https://web.mit.edu/rust-lang_v1.25/arch/amd64_ubuntu1404/share/doc/rust/html/book/first-edition/getting-started.html
+
 ## Cargo CLI
 
 > cargo --version
