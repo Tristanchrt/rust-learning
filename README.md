@@ -2,10 +2,10 @@
 
 ## Doc
 
-Rust's official documentation is an invaluable resource for learning the language. 
+Rust's official documentation is an invaluable resource for learning the language.
 The Rust Book provides comprehensive and beginner-friendly explanations of Rust concepts.
 
-https://doc.rust-lang.org/book/ch04-01-what-is-ownership.html
+[https://doc.rust-lang.org/book/ch04-01-what-is-ownership.html](https://doc.rust-lang.org/book/ch04-01-what-is-ownership.html]())
 
 ## Cargo CLI
 
@@ -29,29 +29,31 @@ https://doc.rust-lang.org/book/ch04-01-what-is-ownership.html
 > cargo test -- --ignored
 > cargo test --test integration_test
 
-
 ## Ownership, Borrowing and Slice type
 
 ### Ownership
 In Rust, ownership rules help manage memory efficiently without a garbage collector:
 
 Ownership Rules:
+
 - Each value in Rust has a variable that's its owner.
 - There can only be one owner at a time.
 - When the owner goes out of scope, the value will be dropped.
 
 ### Borrowing
 Borrowing allows passing references to values without transferring ownership:
+
 - References: Allow you to refer to a value without taking ownership.
 - Mutable References: Enable mutable access to a value.
 
 ### Slice Type
+
 Slices are a view into a sequence of elements in a collection:
 
 - String Slices: Represents a portion of a String.
 - Array Slices: Allow access to a portion of an array.
 
-## Structs 
+## Structs
 
 ### Structs in Rust allow you to create custom data types:
 
@@ -85,6 +87,7 @@ let user2 = User {
 ## Enums (Option, Match, if let)
 
 ### Option Enum
+
 - Option: An enum type that represents either Some(T) or None, where T is the value or absence of a value, respectively.
 - Used for: Handling optional values and reducing the need for null checks.
 
@@ -109,6 +112,7 @@ fn main() {
 ```
 
 ### Match with Enums
+
 - Match: Allows pattern matching against enum variants to execute code based on different conditions.
 
 ```rs
@@ -219,10 +223,10 @@ fn main() {
 }
 ```
 
-
 ## Error Handling (Panic!, Result)
 
 ### Panic!
+
 - Panic: Represents an unrecoverable error and causes the program to stop execution.
 - panic!(): Macro used to generate a panic.
 
@@ -240,6 +244,7 @@ fn main() {
 ```
 
 ### Result Type
+
 - Result: A type that represents either success (Ok) or failure (Err).
 - Handling Results: Use match or combinators like unwrap() or expect() to handle Result values.
 
@@ -266,6 +271,7 @@ fn main() {
 ```
 
 ### Error Propagation with ?
+
 - The ? operator can be used to propagate errors easily within functions that return Result.
 - It either returns the value inside Ok or propagates Err early in the function.
 
