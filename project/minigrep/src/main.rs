@@ -3,9 +3,7 @@ use std::env;
 use minigrep;
 
 fn main() {
-    let args: Vec<String> = env::args().collect();
-
-    let configuration = match minigrep::Config::new(&args) {
+    let configuration = match minigrep::Config::build(env::args()) {
         Ok(config) => {
             println!("{}", config.to_string());
             Some(config)
