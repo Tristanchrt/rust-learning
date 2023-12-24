@@ -1,6 +1,5 @@
-use std::fs;
 use std::error::Error;
-
+use std::fs;
 
 pub struct Config {
     query: String,
@@ -10,12 +9,11 @@ pub struct Config {
 #[derive(Debug)]
 pub enum ConfigError {
     NotEnoughArguments,
-    FileNotFound
+    FileNotFound,
 }
 
-impl Config { 
+impl Config {
     pub fn new(args: &[String]) -> Result<Config, ConfigError> {
-
         if args.len() < 3 {
             return Err(ConfigError::NotEnoughArguments);
         }
@@ -26,11 +24,11 @@ impl Config {
         if !std::path::Path::new(&file_path).exists() {
             return Err(ConfigError::FileNotFound);
         }
-        
-        Ok(Config {query, file_path})
+
+        Ok(Config { query, file_path })
     }
     pub fn to_string(&self) -> String {
-        return format!("Query {} File Path {}", self.query, self.file_path);
+        format!("Query {} File Path {}", self.query, self.file_path)
     }
 }
 
@@ -44,7 +42,7 @@ pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
 
 pub fn search<'a>(query: &str, contents: &'a str) -> Vec<&'a str> {
     let mut results = Vec::new();
-    for line in contents.lines(){
+    for line in contents.lines() {
         if line.contains(query) {
             results.push(line);
         }

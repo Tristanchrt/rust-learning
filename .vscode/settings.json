@@ -5,5 +5,8 @@
         "./adder/Cargo.toml",
         "./adder/Cargo.toml"
     ],
-    "rust-analyzer.showUnlinkedFileNotification": false
+    "rust-analyzer.showUnlinkedFileNotification": false,
+    "[rust]": {
+        "editor.defaultFormatter": "rust-lang.rust-analyzer"
+      }
 }

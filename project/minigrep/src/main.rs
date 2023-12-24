@@ -2,7 +2,6 @@ use std::env;
 
 use minigrep;
 
-
 fn main() {
     let args: Vec<String> = env::args().collect();
 
@@ -22,5 +21,4 @@ fn main() {
     } else {
         eprintln!("Configuration is None. Cannot run minigrep.");
     }
-
 }
