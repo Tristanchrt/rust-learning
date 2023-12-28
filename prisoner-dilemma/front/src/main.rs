@@ -18,12 +18,12 @@ fn main() -> Result<(), slint::PlatformError> {
     let ui = AppWindow::new()?;
 
     let ui_handle = ui.as_weak();
-    ui.on_request_increase_value(move || {
-        let a = format!("{} {} toto", 5, 01);
-        Log::show("INFO", a);
+
+    ui.on_event_game(move |data| {
+        Log::show("INFO", data.to_string());
     });
 
-   
+    ui.set_menu_visible(true);
 
     ui.run()
 }

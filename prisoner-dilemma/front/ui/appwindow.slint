@@ -1,29 +1,80 @@
-import { Button, VerticalBox , HorizontalBox} from "std-widgets.slint";
+import { Button, VerticalBox , HorizontalBox, GridBox, ComboBox} from "std-widgets.slint";
+
+export component Menu {
+    in property <bool> is_visible;
+    callback clicked(string);
+
+    GridLayout {
+        visible: is_visible;
+
+            Row  {
+                Text {
+                    text: "Welcome to the game 1";
+                    horizontal-alignment: center;
+                    color: black;
+                }
+            }
+            Row {
+                Rectangle {
+                    height: 50px;
+                }
+            }
+            Row {
+                HorizontalBox {
+                    Button {
+                        text: "Create Game";
+                        clicked => {
+                            root.clicked("CREATE");
+                        }
+                        visible: true;
+                    }
+                    Button {
+                        text: "Join Game";
+                        clicked => {
+                            root.clicked("JOIN");
+                        }
+                    }
+                }
+            }
+        }
+}
 
 export component AppWindow inherits Window {
-    callback request-increase-value();
-    VerticalBox {
-        
-        Text {
-            text: "Welcome to the game";
+    in property <bool> menu_visible;
+    callback event-game(string);
+
+    Menu {
+        is_visible: menu_visible;
+        clicked(value) =>{
+            root.event-game(value);
         }
-        HorizontalBox {
-            Button {
-                width: 200px;
-                text: "Create Game";
-                clicked => {
-                    root.request-increase-value();
-                }
-            }
-            Button {
-                width: 200px;
-                text: "Join Game";
-                clicked => {
-                    root.request-increase-value();
-                }
-            }
-        }
-        
     }
-   
+    GridLayout {
+        visible: false;
+            Row  {
+                Text {
+                    text: "Welcome to the game 2";
+                    horizontal-alignment: center;
+                    color: black;
+                }
+            }
+            Row {
+                Rectangle {
+                    height: 50px;
+                }
+            }
+            Row {
+                HorizontalBox {
+                    Button {
+                        text: "Create Game";
+                        visible: true;
+                    }
+                    Button {
+                        text: "Join Game";
+                    }
+                }
+            }
+        }
+    
 }
+
