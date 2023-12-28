@@ -1,14 +1,15 @@
 use config::Config;
-use std::{collections::HashMap, fmt::format};
+use std::collections::HashMap;
 
 #[derive(Debug)]
+
 pub struct Settings {
-    host: String, 
-    port: String,
-    client_max: String,
-    buffer_size1: String,
-    buffer_size2: String,
-    party_name: String
+    pub host: String, 
+    pub port: String,
+    pub client_max: String,
+    pub buffer_size1: String,
+    pub buffer_size2: String,
+    pub party_name: String
 }
 
 pub struct Log;
@@ -26,6 +27,7 @@ impl Log {
 }
 
 impl Settings {
+    
     pub fn load(file_name: &str) -> Self {
         let settings = Config::builder()
             .add_source(config::File::with_name(file_name))
@@ -44,7 +46,7 @@ impl Settings {
         }
     }
     
-    fn get_configuration_value(dict: &HashMap<String, String>, key: &str) -> String {
+    pub fn get_configuration_value(dict: &HashMap<String, String>, key: &str) -> String {
         match dict.get(key) {
             Some(value) => value.to_string(),
             None => {
@@ -55,3 +57,6 @@ impl Settings {
     }
   
 }
+
+
+

@@ -1,6 +1,6 @@
 use std::io::{Read, Write};
 use std::net::TcpStream;
-use config::{Settings, Log};
+use settings::{Settings, Log};
 
 
 fn start_client() {
@@ -20,6 +20,6 @@ fn main() {
     let a = format!("{} {} toto", 5, 01);
     Log::show("INFO", a);
 
-    let settings = Settings::load("../config/settings.json");
+    let settings = Settings::load("../settings/settings.json");
     println!("toto {:?}", settings);
 }
