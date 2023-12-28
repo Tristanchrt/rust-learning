@@ -1,3 +1,4 @@
+slint::include_modules!();
 use std::io::{Read, Write};
 use std::net::TcpStream;
 use settings::{Settings, Log};
@@ -13,13 +14,16 @@ fn start_client() {
     println!("Server says: {}", message);
 }
 
+fn main() -> Result<(), slint::PlatformError> {
+    let ui = AppWindow::new()?;
 
-fn main() {
-    // start_client();
+    let ui_handle = ui.as_weak();
+    ui.on_request_increase_value(move || {
+        let a = format!("{} {} toto", 5, 01);
+        Log::show("INFO", a);
+    });
 
-    let a = format!("{} {} toto", 5, 01);
-    Log::show("INFO", a);
+   
 
-    let settings = Settings::load("../settings/settings.json");
-    println!("toto {:?}", settings);
+    ui.run()
 }

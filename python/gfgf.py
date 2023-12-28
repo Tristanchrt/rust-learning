@@ -118,16 +118,75 @@ class LoggedClass:
 # )  # Output: Calling method 'method2' with arguments: (4, 5), {}
 
 
-import time
+# import time
 
 
-def chain(*iterables):
-    for it in iterables:
-        print(it)
-        yield it
+# def chain(*iterables):
+#     for it in iterables:
+#         print(it)
+#         yield it
 
 
-s = "ABC"
-t = tuple(range(3))
-b = list(chain(s, t))
-print(b)
+# s = "ABC"
+# t = tuple(range(3))
+# b = list(chain(s, t))
+# print(b)
+
+import asyncio
+
+
+# Placeholder functions representing API calls
+async def api_call1(request):
+    # Simulating an asynchronous API call
+    await asyncio.sleep(2)  # Simulating a delay
+    return f"Response from api_call1({request})"
+
+
+async def api_call2(request):
+    # Simulating another asynchronous API call
+    await asyncio.sleep(2)  # Simulating a delay
+    return f"Response from api_call2({request})"
+
+
+async def api_call3(request):
+    # Simulating the third asynchronous API call
+    await asyncio.sleep(2)  # Simulating a delay
+    return f"Response from api_call3({request})"
+
+
+# Placeholder functions representing steps in processing
+def step1(response):
+    # Simulating processing step 1
+    return f"Step 1 processed: {response}"
+
+
+def step2(response):
+    # Simulating processing step 2
+    return f"Step 2 processed: {response}"
+
+
+def step3(response):
+    # Simulating processing step 3
+    print(f"Step 3 processed: {response}")
+    # Do something with the final response
+
+
+# The coroutine handling the three stages
+async def three_stages(request1):
+    response1 = await api_call1(request1)
+    # stage 1
+    request2 = step1(response1)
+    response2 = await api_call2(request2)
+    # stage 2
+    request3 = step2(response2)
+    response3 = await api_call3(request3)
+    # stage 3
+    step3(response3)
+
+
+# Run the event loop with an example request
+if __name__ == "__main__":
+    loop = asyncio.get_event_loop()
+    request1_example = "Example Request"
+    loop.run_until_complete(three_stages(request1_example))
+    loop.close()

@@ -1,0 +1,29 @@
+import { Button, VerticalBox , HorizontalBox} from "std-widgets.slint";
+
+export component AppWindow inherits Window {
+    callback request-increase-value();
+    VerticalBox {
+        
+        Text {
+            text: "Welcome to the game";
+        }
+        HorizontalBox {
+            Button {
+                width: 200px;
+                text: "Create Game";
+                clicked => {
+                    root.request-increase-value();
+                }
+            }
+            Button {
+                width: 200px;
+                text: "Join Game";
+                clicked => {
+                    root.request-increase-value();
+                }
+            }
+        }
+        
+    }
+   
+}
