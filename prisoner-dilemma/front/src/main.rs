@@ -23,7 +23,20 @@ fn main() -> Result<(), slint::PlatformError> {
         Log::show("INFO", data.to_string());
     });
 
-    ui.set_menu_visible(true);
+    ui.set_menu_visible(false);
+    ui.set_search_visible(false);
+    ui.set_create_visible(true);
+    ui.set_wait_visible(false);
+  
+    ui.set_number_bet(10);
+    ui.set_number_round(5);
+
+    let ui_clone = ui.clone_strong();
+    ui.on_create_game(move || {
+        let round = ui_clone.get_number_round();
+        let bet = ui_clone.get_number_bet();
+        println!("AAAA {} {}", round, bet);
+    });
 
     ui.run()
 }

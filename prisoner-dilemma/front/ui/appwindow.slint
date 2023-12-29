@@ -39,9 +39,188 @@ export component Menu {
         }
 }
 
+export component Searching {
+    in property <bool> is_visible; 
+
+    GridLayout {
+        visible: is_visible;
+            Row  {
+                Text {
+                    text: "Searching for a game....";
+                    horizontal-alignment: center;
+                    color: black;
+                }
+            }
+    }
+}
+export component Waiting {
+    in property <bool> is_visible; 
+
+    GridLayout {
+        visible: is_visible;
+            Row  {
+                Text {
+                    text: "Wating for player....";
+                    horizontal-alignment: center;
+                    color: black;
+                }
+            }
+    }
+}
+
+export component Party {
+    in property <bool> is_visible; 
+
+    GridLayout {
+
+    }
+    
+}
+
+export component CreateGame {
+    callback clicked;
+    in property <int> number_round;
+    in property <int> number_bet;
+    in property <bool> is_visible;
+
+    GridLayout {
+        visible: is_visible;
+        padding-right: 24px;
+        padding-left: 24px;
+        padding-top: 24px;
+        padding-bottom: 24px;
+            Row  {
+                Text {
+                    text: "Create Game";
+                    horizontal-alignment: center;
+                    color: black;
+                    height: 20px;
+                    font-weight: 800;
+                    font-size: 16px;
+                }
+            }
+            VerticalBox  { 
+                VerticalBox  {
+                    Text {
+                        text: "Round for the party:";
+                        horizontal-alignment: left;
+                        color: black;
+                        height: 20px;
+                    }
+                    TextInput {
+                        selection-background-color: grey;
+                        text: number_round;
+                        height: 20px;
+                        single-line: true;
+                        input-type: number;
+                    }
+                }
+                VerticalBox  {
+                    Text {
+                        text: "Bet per game:";
+                        font-italic: true;
+                        horizontal-alignment: left;
+                        color: black;
+                        height: 20px;
+                    }
+                    TextInput {
+                        selection-background-color: grey;
+                        text: number_bet;
+                        height: 20px;
+                        single-line: true;
+                        input-type: number;
+                    }
+                }
+                Button {
+                    height: 32px;
+                    text: "Create Game";
+                    clicked => {
+                        root.clicked();
+                    }
+                }
+            }
+    }
+}
+
+export component GameChoice {
+    in property <int> PARTY_ID;
+    in property <int> party_rounds;
+    in property <float> player1_money;
+    in property <float> player2_money;
+
+    callback party_betray();
+    callback party_cooperat();
+
+    GridLayout {
+        padding-right: 24px;
+        padding-left: 24px;
+        padding-top: 24px;
+        padding-bottom: 24px;
+        VerticalBox {
+            Text {
+                text: "Party  #"+ PARTY_ID +" round: " + party_rounds;
+                font-italic: true;
+                horizontal-alignment: center;
+                color: black;
+                height: 32px;
+                font-weight: 800;
+                font-size: 16px;
+            }
+            HorizontalBox {
+                height: 32px;
+                Text {
+                    text: "Player 1: " + player1_money;
+                    font-italic: true;
+                    horizontal-alignment: center;
+                    color: black;
+                }
+                Text {
+                    text: "Player 2: " + player2_money;
+                    font-italic: true;
+                    horizontal-alignment: center;
+                    color: black;
+                }
+            }
+            Button {
+                height: 32px;
+                text: "Cooperat";
+                clicked => {
+                    root.party_cooperat()
+                }
+            }
+            Button {
+                height: 32px;
+                text: "Betray";
+                clicked => {
+                    root.party-betray()
+                }
+            }
+        
+        }
+    }
+}
+
 export component AppWindow inherits Window {
     in property <bool> menu_visible;
+    in property <bool> search_visible;
+    in property <bool> create_visible;
+    in property <bool> wait_visible;
+
+    in property <int> number_round;
+    in property <int> number_bet;
+    
+    in property <int> PARTY_ID;
+    in property <int> party_rounds;
+    in property <float> player1_money;
+    in property <float> player2_money;
+    
     callback event-game(string);
+    callback create_game();
+    callback party_cooperat();
+    callback party_betray();
+
+    width: 300px;
+    height: 300px;
 
     Menu {
         is_visible: menu_visible;
@@ -49,32 +228,39 @@ export component AppWindow inherits Window {
             root.event-game(value);
         }
     }
-    GridLayout {
-        visible: false;
-            Row  {
-                Text {
-                    text: "Welcome to the game 2";
-                    horizontal-alignment: center;
-                    color: black;
-                }
-            }
-            Row {
-                Rectangle {
-                    height: 50px;
-                }
-            }
-            Row {
-                HorizontalBox {
-                    Button {
-                        text: "Create Game";
-                        visible: true;
-                    }
-                    Button {
-                        text: "Join Game";
-                    }
-                }
-            }
-        }
-    
-}
 
+    Waiting {
+        is-visible: wait_visible;
+    }
+  
+    Searching {
+        is_visible: search_visible;
+    }
+
+    CreateGame {
+        is_visible: create_visible;
+        number_round: number_round;
+        number_bet: number_bet;
+        clicked =>{
+            root.create_game();
+        }
+    }
+
+    GameChoice {
+        PARTY_ID: PARTY_ID;
+        party_rounds: party_rounds;
+        player2_money: player2_money;
+        player1_money: player1_money;
+        party_betray => {
+            root.party_betray();
+        }
+        party_cooperat => {
+            root.party_cooperat();
+        }
+
+    }
+    
+
+
+
+}
