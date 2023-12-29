@@ -28,8 +28,11 @@ impl Controller {
             panic!("Error size 0");
         }
 
-        tcp_stream.write_all(b"Hello, client").unwrap();
-        tcp_stream.flush().unwrap();
+        let message = String::from_utf8_lossy(&buffer[.._size]);
+        println!("Server receive: {}", message);
+
+        // tcp_stream.write_all(b"Hello, client").unwrap();
+        // tcp_stream.flush().unwrap();
 
         // let party = self.deserialization(tcp_stream);
         // self.handle_party(party);

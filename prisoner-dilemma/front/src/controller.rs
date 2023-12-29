@@ -20,7 +20,7 @@ impl Client {
     pub fn new(host: &str, port: &str) -> Self {
         let tcp = TcpStream::connect(format!("{}:{}", host, port)).unwrap();
         Self { tcp }
-    }
+    }   
 
     fn init(mut self) {
         self.tcp.write_all(b"Hello server").unwrap();
