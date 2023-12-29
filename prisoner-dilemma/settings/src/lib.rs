@@ -1,27 +1,36 @@
 use config::Config;
-use std::{collections::HashMap, ffi::c_float};
+use std::{collections::HashMap};
 
 #[derive(Debug)]
-
-
 pub struct Player{
+    pub id: u32,
     pub money: f64,
 }
-
-pub struct PartyData {
+#[derive(Debug)]
+pub enum Status {
+    Created,
+    WaitingPlayer,
+    Started,
+    Finished,
+}
+#[derive(Debug)]
+pub struct Party {
+    pub id: u32,
     pub game_id: u32,
     pub total_round: u32,
-    pub round_left: u32,
-    pub bet_per_game: u32,
+    pub round: u32,
+    pub status: Status,
+    pub bet: u32,
     pub players: (Player, Player),
-    pub winner: Player
+    pub winner: Player,
+    pub looser: Player
 }
-
-pub struct GameData {
-    pub parties: Vec<PartyData>,
+#[derive(Debug)]
+pub struct Game {
+    pub id: u32,
+    pub parties: Vec<Party>,
     pub players: Vec<Player>,
 }
-
 
 pub struct Settings {
     pub host: String, 

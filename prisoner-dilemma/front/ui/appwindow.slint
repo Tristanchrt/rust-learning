@@ -147,11 +147,14 @@ export component GameChoice {
     in property <int> party_rounds;
     in property <float> player1_money;
     in property <float> player2_money;
+    in property <bool> is_visible;
+
 
     callback party_betray();
     callback party_cooperat();
 
     GridLayout {
+        visible: is_visible;
         padding-right: 24px;
         padding-left: 24px;
         padding-top: 24px;
@@ -205,6 +208,7 @@ export component AppWindow inherits Window {
     in property <bool> search_visible;
     in property <bool> create_visible;
     in property <bool> wait_visible;
+    in property <bool> game_visible;
 
     in property <int> number_round;
     in property <int> number_bet;
@@ -247,6 +251,7 @@ export component AppWindow inherits Window {
     }
 
     GameChoice {
+        is_visible: game_visible;
         PARTY_ID: PARTY_ID;
         party_rounds: party_rounds;
         player2_money: player2_money;
