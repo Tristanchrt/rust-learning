@@ -17,7 +17,6 @@ pub enum Status {
 #[derive(Debug)]
 pub struct Party {
     pub id: u32,
-    pub game_id: u32,
     pub total_round: u32,
     pub round: u32,
     pub status: Status,
@@ -57,7 +56,6 @@ impl Default for Party {
     fn default() -> Self {
         Self {
             id: 0,
-            game_id: 0,
             total_round: 0,
             round: 0,
             status: Status::default(),

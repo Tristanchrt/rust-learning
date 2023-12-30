@@ -9,10 +9,6 @@ pub struct Controller {
     pub game: Game,
 }
 
-unsafe fn any_as_u8_slice<T: Sized>(p: &T) -> &[u8] {
-    ::core::slice::from_raw_parts((p as *const T) as *const u8, ::core::mem::size_of::<T>())
-}
-
 type BufferSize = [u8; 1024];
 
 impl Controller {
@@ -41,8 +37,9 @@ impl Controller {
         let _size = tcp_stream.read(&mut buffer).unwrap();
 
         if _size == 0 {
-            panic!("Error size 0");
+            panic!("Error reading message");
         }
+
         let protocol: Protocol = Protocol::from_bytes(&buffer[.._size]);
 
         self.handle_party(&protocol, &tcp_stream);
@@ -51,12 +48,18 @@ impl Controller {
     pub fn handle_party(&self, protocol: &Protocol, tcp_stream: &TcpStream) {
         match protocol.party_status {
             Status::Init => self.init_player(&tcp_stream),
-            Status::Created => println!("1"),
+            Status::Created => self.create_game(&protocol, &tcp_stream),
             Status::Started => println!("2"),
             Status::WaitingPlayer => println!("3"),
             Status::Finished => println!("4"),
             _ => println!("Something went wrong with the Party status"),
         }
+    }
+
+    pub fn create_game(&self, protocol: &Protocol, mut tcp_stream: &TcpStream) {
+        let mut party = Party::default();
+        let mut rng = rand::thread_rng();
+        party.id = rng.gen::<u32>();
     }
 
     pub fn init_player(&self, mut tcp_stream: &TcpStream) {
