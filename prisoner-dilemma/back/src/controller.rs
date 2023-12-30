@@ -59,15 +59,14 @@ impl Controller {
         }
     }
 
-    pub fn init_player(mut self, mut tcp_stream: &TcpStream) {
+    pub fn init_player(&self, mut tcp_stream: &TcpStream) {
         let mut protocol: Protocol = Protocol::default();
         let mut rng = rand::thread_rng();
         protocol.player.id = rng.gen::<u32>();
 
-        let bytes = protocol.to_bytes();
         Log::show("INFO", format!("New user #{}", protocol.player.id));
 
-        self.game.players.push(protocol.player);
+        let bytes = protocol.to_bytes();
 
         tcp_stream.write_all(&bytes).unwrap();
         tcp_stream.flush().unwrap();
