@@ -1,5 +1,5 @@
 slint::include_modules!();
-use settings::{Log, Settings};
+use settings::{Log, Protocol, Settings};
 use std::io::{Read, Write};
 use std::net::TcpStream;
 use std::thread;
@@ -20,18 +20,30 @@ impl Client {
     pub fn new(host: &str, port: &str) -> Self {
         let tcp = TcpStream::connect(format!("{}:{}", host, port)).unwrap();
         Self { tcp }
-    }   
-
-    fn init(mut self) {
-        self.tcp.write_all(b"Hello server").unwrap();
-        self.tcp.flush().unwrap();
-        let mut buffer = [0; 1024];
-        let size = self.tcp.read(&mut buffer).unwrap();
-        let message = String::from_utf8_lossy(&buffer[..size]);
-        println!("Server says: {}", message);
     }
 
-    fn send_message(&self) {}
+    fn init(&mut self) {
+        let default_protocol = Protocol::default();
+        self.send_message(default_protocol);
+
+        let mut buffer = [0; 1024];
+        let bytes_read: usize = self.tcp.read(&mut buffer).expect("Read error");
+
+        let protocol: Protocol = Protocol::from_bytes(&buffer[..bytes_read]);
+        Log::show(
+            "INFO",
+            format!(
+                "Hello user #{} status {:?}",
+                protocol.player.id, protocol.party_status
+            ),
+        );
+    }
+
+    fn send_message(&mut self, protocol: Protocol) {
+        let bytes = protocol.to_bytes();
+        self.tcp.write_all(&bytes).unwrap();
+        self.tcp.flush().unwrap();
+    }
 }
 
 impl Controller {
@@ -39,7 +51,7 @@ impl Controller {
         let ui = Interface::new();
         ui.init();
 
-        let client = Client::new(&self.settings.host, &self.settings.port);
+        let mut client = Client::new(&self.settings.host, &self.settings.port);
 
         client.init();
 
