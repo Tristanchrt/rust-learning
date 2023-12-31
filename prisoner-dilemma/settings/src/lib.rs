@@ -1,7 +1,7 @@
 use config::Config;
 use std::collections::HashMap;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Player {
     pub id: u32,
     pub money: f64,
@@ -64,6 +64,12 @@ impl Default for Party {
             winner: None,
             looser: None,
         }
+    }
+}
+
+impl Game {
+    pub fn add_party(&mut self, party: Party) {
+        self.parties.push(party);
     }
 }
 

@@ -1,5 +1,5 @@
 use rand::Rng;
-use settings::{Game, Log, Party, Protocol, Settings, Status};
+use settings::{Game, Log, Party, Player, Protocol, Settings, Status};
 use std::io::{Bytes, Read, Write};
 use std::net::{TcpListener, TcpStream};
 use std::result;
@@ -60,6 +60,11 @@ impl Controller {
         let mut party = Party::default();
         let mut rng = rand::thread_rng();
         party.id = rng.gen::<u32>();
+        party.status = Status::WaitingPlayer;
+        let default_player = Player::default();
+        let player_from_protocol = protocol.player.clone();
+        party.players = (default_player, player_from_protocol);
+        self.game.add_party(party);
     }
 
     pub fn init_player(&self, mut tcp_stream: &TcpStream) {
