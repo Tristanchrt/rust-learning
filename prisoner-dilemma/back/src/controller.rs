@@ -20,10 +20,11 @@ impl Controller {
         Self { listener, game }
     }
 
-    pub fn run(&self) {
-        for stream in self.listener.incoming() {
+    pub fn run(&mut self) {
+        let tcp_listener_c = self.listener.try_clone();
+        for stream in tcp_listener_c.unwrap().incoming() {
             match stream {
-                Ok(result) => self.process_message(result),
+                Ok(result) => self.process_message(&result),
                 Err(_) => Log::show(
                     "ERROR",
                     format!("Someting went wrong for reading the stream"),
@@ -32,7 +33,7 @@ impl Controller {
         }
     }
 
-    pub fn process_message(&self, mut tcp_stream: TcpStream) {
+    pub fn process_message(&mut self, mut tcp_stream: &TcpStream) {
         let mut buffer: BufferSize = [0; 1024];
         let _size = tcp_stream.read(&mut buffer).unwrap();
 
@@ -45,24 +46,41 @@ impl Controller {
         self.handle_party(&protocol, &tcp_stream);
     }
 
-    pub fn handle_party(&self, protocol: &Protocol, tcp_stream: &TcpStream) {
+    pub fn handle_party(&mut self, protocol: &Protocol, tcp_stream: &TcpStream) {
         match protocol.party_status {
             Status::Init => self.init_player(&tcp_stream),
             Status::Created => self.create_game(&protocol, &tcp_stream),
-            Status::Started => println!("2"),
             Status::WaitingPlayer => println!("3"),
+            Status::JoinParty => self.join_game(&protocol, &tcp_stream),
+            Status::Started => println!("2"),
             Status::Finished => println!("4"),
             _ => println!("Something went wrong with the Party status"),
         }
     }
 
-    pub fn create_game(&self, protocol: &Protocol, mut tcp_stream: &TcpStream) {
+    pub fn join_game(&mut self, protocol: &Protocol, mut tcp_stream: &TcpStream) {
+        if let Some(found_element) = self
+            .game
+            .parties
+            .iter()
+            .find(|&element| element.status == Status::WaitingPlayer)
+        {
+            println!("Element found: {:?}", found_element);
+        } else {
+            println!("Element not found");
+        }
+    }
+
+    pub fn create_game(&mut self, protocol: &Protocol, mut tcp_stream: &TcpStream) {
         let mut party = Party::default();
         let mut rng = rand::thread_rng();
+
         party.id = rng.gen::<u32>();
         party.status = Status::WaitingPlayer;
+
         let default_player = Player::default();
         let player_from_protocol = protocol.player.clone();
+
         party.players = (default_player, player_from_protocol);
         self.game.add_party(party);
     }

@@ -143,10 +143,9 @@ export component CreateGame {
 }
 
 export component GameChoice {
-    in property <int> PARTY_ID;
+    in property <int> party_id;
     in property <int> party_rounds;
     in property <float> player1_money;
-    in property <float> player2_money;
     in property <bool> is_visible;
 
 
@@ -161,7 +160,7 @@ export component GameChoice {
         padding-bottom: 24px;
         VerticalBox {
             Text {
-                text: "Party  #"+ PARTY_ID +" round: " + party_rounds;
+                text: "Party  #"+ party_id +" round: " + party_rounds;
                 font-italic: true;
                 horizontal-alignment: center;
                 color: black;
@@ -173,12 +172,6 @@ export component GameChoice {
                 height: 32px;
                 Text {
                     text: "Player 1: " + player1_money;
-                    font-italic: true;
-                    horizontal-alignment: center;
-                    color: black;
-                }
-                Text {
-                    text: "Player 2: " + player2_money;
                     font-italic: true;
                     horizontal-alignment: center;
                     color: black;
@@ -212,11 +205,10 @@ export component AppWindow inherits Window {
 
     in property <int> number_round;
     in property <int> number_bet;
-    
-    in property <int> PARTY_ID;
+    in property <int> party_id;
     in property <int> party_rounds;
+    in property <int> player_id;
     in property <float> player1_money;
-    in property <float> player2_money;
     
     callback event-game(string);
     callback create_game();
@@ -252,9 +244,8 @@ export component AppWindow inherits Window {
 
     GameChoice {
         is_visible: game_visible;
-        PARTY_ID: PARTY_ID;
+        party_id: party_id;
         party_rounds: party_rounds;
-        player2_money: player2_money;
         player1_money: player1_money;
         party_betray => {
             root.party_betray();

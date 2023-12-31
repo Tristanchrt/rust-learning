@@ -6,11 +6,12 @@ pub struct Player {
     pub id: u32,
     pub money: f64,
 }
-#[derive(Debug)]
+#[derive(Debug, PartialEq, Eq)]
 pub enum Status {
     Init,
     Created,
     WaitingPlayer,
+    JoinParty,
     Started,
     Finished,
 }
@@ -38,6 +39,7 @@ pub struct Protocol {
     pub total_round: u32,
     pub round: u32,
     pub bet: u32,
+    pub party_id: u32,
 }
 
 impl Default for Player {
@@ -90,6 +92,7 @@ impl Default for Protocol {
             total_round: 0,
             round: 0,
             bet: 0,
+            party_id: 0,
         }
     }
 }
@@ -124,10 +127,12 @@ impl Protocol {
             Status::WaitingPlayer => 2,
             Status::Started => 3,
             Status::Finished => 4,
+            Status::JoinParty => 5,
         });
         bytes.extend(&self.total_round.to_be_bytes());
         bytes.extend(&self.round.to_be_bytes());
         bytes.extend(&self.bet.to_be_bytes());
+        bytes.extend(&self.party_id.to_be_bytes());
         bytes
     }
     pub fn from_bytes(bytes: &[u8]) -> Protocol {
@@ -140,12 +145,14 @@ impl Protocol {
             2 => Status::WaitingPlayer,
             3 => Status::Started,
             4 => Status::Finished,
+            5 => Status::JoinParty,
             _ => Status::Init,
         };
 
         let total_round: u32 = u32::from_be_bytes([bytes[13], bytes[14], bytes[15], bytes[16]]);
         let round: u32 = u32::from_be_bytes([bytes[17], bytes[18], bytes[19], bytes[20]]);
         let bet: u32 = u32::from_be_bytes([bytes[21], bytes[22], bytes[23], bytes[24]]);
+        let party_id: u32 = u32::from_be_bytes([bytes[25], bytes[26], bytes[27], bytes[28]]);
 
         Protocol {
             player,
@@ -153,6 +160,7 @@ impl Protocol {
             total_round,
             round,
             bet,
+            party_id,
         }
     }
 }
